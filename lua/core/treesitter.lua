@@ -5,7 +5,7 @@ if not ok then
 end
 
 treesitter.setup {
-  ensure_installed = "maintained",
+  ensure_installed = "all",
   ignore_install = {},
   highlight = {
     enable = true,
@@ -51,6 +51,5 @@ treesitter.setup {
   },
 }
 
-vim.o.foldenable = false
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"

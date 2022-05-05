@@ -61,7 +61,7 @@ gitsigns.setup {
   max_file_length = 40000,
   preview_config = {
     -- Options passed to nvim_open_win
-    border = "single",
+    border = "rounded",
     style = "minimal",
     relative = "cursor",
     row = 0,
@@ -72,7 +72,4 @@ gitsigns.setup {
   },
 }
 
-vim.api.nvim_set_keymap("n", "<leader>lb", ":Gitsigns toggle_current_line_blame<CR>", {
-  noremap = true,
-  silent = true,
-})
+vim.keymap.set("n", "<leader>lb", ":Gitsigns toggle_current_line_blame<CR>")

@@ -52,21 +52,25 @@ cmap <C-n> <Down>
 autocmd BufNewFile,BufRead .clang-tidy set filetype=yaml
 
 " Fcitx5 auto switch
+" Every time exit insert mode, automatically close fcitx5
 autocmd InsertLeave * :silent !fcitx5-remote -c
 
 " Binary
+" Enter binary mode when editing a file with postfix 'bin'
 augroup Binary
-  au!
-  au BufReadPre  *.bin let &bin=1
-  au BufReadPost *.bin if &bin | %!xxd
-  au BufReadPost *.bin set ft=xxd | endif
-  au BufWritePre *.bin if &bin | %!xxd -r
-  au BufWritePre *.bin endif
-  au BufWritePost *.bin if &bin | %!xxd
-  au BufWritePost *.bin set nomod | endif
+  autocmd!
+  autocmd BufReadPre  *.bin let &bin=1
+  autocmd BufReadPost *.bin if &bin | %!xxd
+  autocmd BufReadPost *.bin set filetype=xxd | endif
+  autocmd BufWritePre *.bin if &bin | %!xxd -r
+  autocmd BufWritePre *.bin endif
+  autocmd BufWritePost *.bin if &bin | %!xxd
+  autocmd BufWritePost *.bin set nomod | endif
 augroup END
 
 " Cursor
+" Set cursor shape to beam instead of block,
+" using in tmux
 augroup ResetNvimCursor
   autocmd!
   autocmd VimEnter,VimResume * set guicursor=n-v-c-sm:block-blinkon100,i-ci-ve:ver25-blinkon100,r-cr-o:hor20-blinkon100
@@ -91,9 +95,50 @@ if has("ide")
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
 
-  map <leader>e :NERDTree<CR>
-  nnoremap <leader>F <Action>(ReformatCode)
+  nmap [b :bp<CR>
+  nmap ]b :bn<CR>
+  nmap <leader>ff <Action>(GotoFile)
+  nmap <leader>F <Action>(ReformatCode)
+  nmap <leader>rn <Action>(RenameElement)
+  nmap <leader>ca <Action>(ShowIntentionActions)
+  nmap <leader>b <Action>(ToggleLineBreakpoint)
 
-  sethandler <C-W> n-v:ide i:vim
+  nmap <leader>a <Action>(ActivateStructureToolWindow)
+  nmap <C-\> <Action>(ActivateTerminalToolWindow)
+
+  nmap <leader>e :NERDTree<CR>
+
+  sethandler <C-2> a:vim
+  sethandler <C-S-2> a:vim
+  sethandler <C-6> a:vim
+  sethandler <C-S-6> a:vim
+  sethandler <C-;> a:vim
+  sethandler <C-S-;> a:vim
+  sethandler <C-A> a:vim
+  sethandler <C-B> a:vim
+  sethandler <C-C> a:vim
+  sethandler <C-D> a:vim
+  sethandler <C-E> a:vim
+  sethandler <C-F> a:vim
+  sethandler <C-G> a:vim
+  sethandler <C-H> a:vim
+  sethandler <C-I> a:vim
+  sethandler <C-J> a:ide
+  sethandler <C-K> a:vim
+  sethandler <C-L> a:vim
+  sethandler <C-M> a:vim
+  sethandler <C-N> a:vim
+  sethandler <C-O> a:vim
+  sethandler <C-P> a:vim
+  sethandler <C-Q> a:vim
+  sethandler <C-R> a:vim
+  sethandler <C-S> a:vim
+  sethandler <C-T> a:vim
   sethandler <C-U> a:vim
+  sethandler <C-V> a:vim
+  sethandler <C-W> a:vim
+  sethandler <C-X> a:vim
+  sethandler <C-Y> a:vim
+  sethandler <C-[> a:vim
+  sethandler <C-]> a:vim
 endif

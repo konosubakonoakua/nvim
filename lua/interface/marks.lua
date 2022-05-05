@@ -28,6 +28,8 @@ marks.setup {
     "",
     "NvimTree",
     "Outline",
+    "neo-tree",
+    "neo-tree-popup",
     "DressingInput",
     "NeogitCommitMessage",
     "NeogitNotification",

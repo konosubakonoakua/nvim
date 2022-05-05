@@ -8,12 +8,12 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- Automatically run :PackerCompile after every time this file is changed
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]]
+vim.api.nvim_create_augroup("packer_user_config", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = "packer_user_config",
+  pattern = "plugins.lua",
+  command = "source <afile> | PackerCompile",
+})
 
 local packer = require "packer"
 
@@ -174,6 +174,18 @@ return packer.startup {
       disable = true,
     }
 
+    use {
+      "ThePrimeagen/refactoring.nvim",
+      config = function()
+        require "edit.refactoring"
+      end,
+      requires = {
+        { "nvim-lua/plenary.nvim" },
+        { "nvim-treesitter/nvim-treesitter" },
+      },
+      disable = true,
+    }
+
     -- Interface Extension
     use {
       "akinsho/nvim-bufferline.lua",
@@ -206,10 +218,20 @@ return packer.startup {
     }
 
     use {
+      "anuvyklack/pretty-fold.nvim",
+      config = function()
+        require "interface.pretty-fold"
+      end,
+      requires = { "anuvyklack/nvim-keymap-amend" },
+    }
+
+    use {
       "m-demare/hlargs.nvim",
       config = function()
         require "interface.hlargs"
       end,
+      after = { "catppuccin" },
+      -- hlargs should be loaded after colorscheme
     }
 
     use {
@@ -268,7 +290,8 @@ return packer.startup {
     }
 
     use {
-      "romgrk/nvim-treesitter-context",
+      -- Actively maintained fork of romgrk/nvim-treesitter-context
+      "lewis6991/nvim-treesitter-context",
       config = function()
         require "interface.treesitter-context"
       end,
@@ -288,6 +311,15 @@ return packer.startup {
       config = function()
         require "interface.bqf"
       end,
+    }
+
+    use {
+      "kevinhwang91/nvim-fFHighlight",
+      config = function()
+        require "interface.ffhighlight"
+      end,
+      after = { "catppuccin" },
+      disable = true,
     }
 
     use {
@@ -343,6 +375,9 @@ return packer.startup {
 
     use {
       "tversteeg/registers.nvim",
+      config = function()
+        require "interface.registers"
+      end,
       disable = true,
       -- Behaves strangely when used with text objects
     }
@@ -436,6 +471,15 @@ return packer.startup {
 
     use {
       "nvim-neo-tree/neo-tree.nvim",
+      config = function()
+        require "tool.neo-tree"
+      end,
+      branch = "v2.x",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+        "MunifTanjim/nui.nvim",
+      },
       disable = true,
     }
 
@@ -447,15 +491,6 @@ return packer.startup {
       requires = { "kyazdani42/nvim-web-devicons" },
       cmd = { "SymbolsOutline" },
       disable = true,
-    }
-
-    use {
-      "folke/trouble.nvim",
-      config = function()
-        require "tool.trouble"
-      end,
-      requires = "kyazdani42/nvim-web-devicons",
-      cmd = { "TroubleToggle" },
     }
 
     use {
@@ -669,10 +704,9 @@ return packer.startup {
     }
 
     use {
-      "Pocco81/DAPInstall.nvim",
-      config = function()
-        require "debug.dap-install"
-      end,
+      "Pocco81/dap-buddy.nvim",
+      run = "make",
+      disable = true,
     }
 
     use {

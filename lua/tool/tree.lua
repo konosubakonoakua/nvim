@@ -4,7 +4,6 @@ if not ok then
   return
 end
 
-vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
 vim.g.nvim_tree_git_hl = 1 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
 vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
 vim.g.nvim_tree_root_folder_modifier = ":~" -- This is the default. See :help filename-modifiers for more options
@@ -17,8 +16,8 @@ vim.g.nvim_tree_create_in_closed_folder = 0 -- 1 by default, When creating files
 vim.g.nvim_tree_special_files = { ["README.md"] = 1, ["Makefile"] = 1, ["MAKEFILE"] = 1 } -- List of filenames that gets highlighted with NvimTreeSpecialFile
 vim.g.nvim_tree_show_icons = {
   git = 1,
-  folders = 0,
-  files = 0,
+  folders = 1,
+  files = 1,
   folder_arrows = 0,
 }
 -- If 0, do not show the icons for one of 'git' 'folder' and 'files'
@@ -51,12 +50,6 @@ vim.g.nvim_tree_icons = {
     symlink = "",
     symlink_open = "",
   },
-  lsp = {
-    hint = "",
-    info = "",
-    warning = "",
-    error = "",
-  },
 }
 
 -- a list of groups can be found at `:help nvim_tree_highlight`
@@ -65,48 +58,17 @@ vim.api.nvim_command "highlight NvimTreeFolderIcon guibg=blue"
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 tree.setup {
-  disable_netrw = true,
-  hijack_netrw = true,
-  open_on_setup = false,
-  ignore_buffer_on_setup = false,
-  ignore_ft_on_setup = {},
-  auto_close = false,
   auto_reload_on_write = true,
-  open_on_tab = false,
+  disable_netrw = true,
   hijack_cursor = false,
-  update_cwd = true,
+  hijack_netrw = true,
   hijack_unnamed_buffer_when_opening = false,
-  hijack_directories = {
-    enable = true,
-    auto_open = true,
-  },
-  diagnostics = {
-    enable = false,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    },
-  },
-  update_focused_file = {
-    enable = true,
-    update_cwd = true,
-    ignore_list = {},
-  },
-  system_open = {
-    cmd = nil,
-    args = {},
-  },
-  filters = {
-    dotfiles = false,
-    custom = {},
-  },
-  git = {
-    enable = true,
-    ignore = false,
-    timeout = 500,
-  },
+  ignore_buffer_on_setup = false,
+  open_on_setup = false,
+  open_on_setup_file = false,
+  open_on_tab = false,
+  sort_by = "name",
+  update_cwd = true,
   view = {
     width = function()
       local columns = vim.go.columns
@@ -116,22 +78,69 @@ tree.setup {
     hide_root_folder = false,
     side = "left",
     preserve_window_proportions = false,
-    mappings = {
-      custom_only = false,
-      list = {},
-    },
     number = false,
     relativenumber = false,
     signcolumn = "yes",
+    mappings = {
+      custom_only = false,
+      list = {
+        -- user mappings go here
+      },
+    },
   },
-  trash = {
-    cmd = "trash",
-    require_confirm = true,
+  renderer = {
+    indent_markers = {
+      enable = true,
+      icons = {
+        corner = "└ ",
+        edge = "│ ",
+        none = "  ",
+      },
+    },
+    icons = {
+      webdev_colors = true,
+    },
+  },
+  hijack_directories = {
+    enable = true,
+    auto_open = true,
+  },
+  update_focused_file = {
+    enable = true,
+    update_cwd = true,
+    ignore_list = {},
+  },
+  ignore_ft_on_setup = {},
+  system_open = {
+    cmd = nil,
+    args = {},
+  },
+  diagnostics = {
+    enable = false,
+    show_on_dirs = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    },
+  },
+  filters = {
+    dotfiles = false,
+    custom = {},
+    exclude = {},
+  },
+  git = {
+    enable = true,
+    ignore = false,
+    timeout = 500,
   },
   actions = {
+    use_system_clipboard = true,
     change_dir = {
       enable = true,
       global = false,
+      restrict_above_cwd = false,
     },
     open_file = {
       quit_on_open = false,
@@ -146,6 +155,22 @@ tree.setup {
       },
     },
   },
+  trash = {
+    cmd = "trash",
+    require_confirm = true,
+  },
+  log = {
+    enable = false,
+    truncate = false,
+    types = {
+      all = false,
+      config = false,
+      copy_paste = false,
+      diagnostics = false,
+      git = false,
+      profile = false,
+    },
+  },
 }
 
-vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")

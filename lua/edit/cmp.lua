@@ -88,14 +88,43 @@ cmp.setup {
     { name = "luasnip" },
     { name = "nvim_lsp" },
     { name = "nvim_lua" },
-    { name = "buffer" },
+    {
+      name = "buffer",
+      option = {
+        get_bufnrs = function()
+          local bufs = {}
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            bufs[vim.api.nvim_win_get_buf(win)] = true
+          end
+          return vim.tbl_keys(bufs)
+        end,
+      },
+    },
     { name = "path" },
     { name = "calc" },
     { name = "latex_symbols" },
     { name = "orgmode" },
   },
   formatting = {
-    format = lspkind.cmp_format { mode = "symbol", maxwidth = 50 },
+    format = lspkind.cmp_format {
+      mode = "symbol",
+      maxwidth = 50,
+      menu = {
+        luasnip = "[SNP]",
+        nvim_lsp = "[LSP]",
+        nvim_lua = "[VIM]",
+        buffer = "[BUF]",
+        path = "[PTH]",
+        calc = "[CLC]",
+        latex_symbols = "[TEX]",
+        orgmode = "[ORG]",
+      },
+    },
+    fields = {
+      "kind",
+      "abbr",
+      "menu",
+    },
   },
   sorting = {
     comparators = {
