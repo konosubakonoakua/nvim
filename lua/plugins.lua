@@ -84,6 +84,8 @@ return packer.startup {
     use {
       "b0o/mapx.nvim",
       disable = true,
+      -- Plugin organize keymaps
+      -- Disable because lots of refactorings needs to be done
     }
 
     use { "lewis6991/impatient.nvim" }
@@ -184,6 +186,8 @@ return packer.startup {
         { "nvim-treesitter/nvim-treesitter" },
       },
       disable = true,
+      -- Plugin surpporting refactorings
+      -- Disable because it needs neovim nightly
     }
 
     -- Interface Extension
@@ -290,8 +294,7 @@ return packer.startup {
     }
 
     use {
-      -- Actively maintained fork of romgrk/nvim-treesitter-context
-      "lewis6991/nvim-treesitter-context",
+      "nvim-treesitter/nvim-treesitter-context",
       config = function()
         require "interface.treesitter-context"
       end,
@@ -307,6 +310,14 @@ return packer.startup {
     use { "dstein64/nvim-scrollview" }
 
     use {
+      "lewis6991/satellite.nvim",
+      disable = true,
+      -- A substitue for nvim-scrollview
+      -- which support search results, lsp diagnostics and git hunks
+      -- Disable because it's work in progress
+    }
+
+    use {
       "kevinhwang91/nvim-bqf",
       config = function()
         require "interface.bqf"
@@ -320,6 +331,8 @@ return packer.startup {
       end,
       after = { "catppuccin" },
       disable = true,
+      -- Plugin show inline search highlight
+      -- Disable because it's not very useful
     }
 
     use {
@@ -355,7 +368,12 @@ return packer.startup {
       },
     }
 
-    use { "psliwka/vim-smoothie" }
+    use {
+      "psliwka/vim-smoothie",
+      -- When moving the cursor quickly while smoothie animation is playing,
+      -- the cursor will be stuck in the middle of the screen.
+      -- Try to get rid of dependency on moving animations.
+    }
 
     use {
       "edluffy/specs.nvim",
@@ -367,7 +385,7 @@ return packer.startup {
     }
 
     use {
-      "chentau/marks.nvim",
+      "chentoast/marks.nvim",
       config = function()
         require "interface.marks"
       end,
@@ -481,6 +499,8 @@ return packer.startup {
         "MunifTanjim/nui.nvim",
       },
       disable = true,
+      -- Subtitute for nvim-tree
+      -- Disable because few colorschemes support it
     }
 
     use {
@@ -491,6 +511,8 @@ return packer.startup {
       requires = { "kyazdani42/nvim-web-devicons" },
       cmd = { "SymbolsOutline" },
       disable = true,
+      -- Subtitute for aerial.nvim
+      -- Disable because better to use aerial.nvim
     }
 
     use {
@@ -580,6 +602,17 @@ return packer.startup {
         require "tool.octo"
       end,
       cmd = { "Octo" },
+      disable = true,
+      -- Subtitute for gh.nvim
+      -- Disable because better to use gh.nvim
+    }
+
+    use {
+      "ldelossa/gh.nvim",
+      config = function()
+        require "tool.gh"
+      end,
+      requires = "ldelossa/litee.nvim",
     }
 
     use {
