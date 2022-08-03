@@ -5,7 +5,7 @@ set shiftwidth=2
 set smarttab
 set backspace=indent,eol,start
 set nobackup
-set noswapfile
+set swapfile
 set ignorecase
 set smartcase
 set autoindent
@@ -44,7 +44,6 @@ set fileencodings=utf-8,gbk2312,gbk,gb18030,cp936
 " Keymapping
 set pastetoggle=<F2>
 let mapleader=" "
-nnoremap <silent> <BS> :nohlsearch<CR>
 cmap <C-p> <Up>
 cmap <C-n> <Down>
 
@@ -71,11 +70,11 @@ augroup END
 " Cursor
 " Set cursor shape to beam instead of block,
 " using in tmux
-augroup ResetNvimCursor
-  autocmd!
-  autocmd VimEnter,VimResume * set guicursor=n-v-c-sm:block-blinkon100,i-ci-ve:ver25-blinkon100,r-cr-o:hor20-blinkon100
-  autocmd VimLeave,VimSuspend * set guicursor=a:ver25-blinkon100
-augroup END
+" augroup ResetNvimCursor
+"   autocmd!
+"   autocmd VimEnter,VimResume * set guicursor=n-v-c-sm:block-blinkon100,i-ci-ve:ver25-blinkon100,r-cr-o:hor20-blinkon100
+"   autocmd VimLeave,VimSuspend * set guicursor=a:ver25-blinkon100
+" augroup END
 
 " Neovim
 if has("nvim")

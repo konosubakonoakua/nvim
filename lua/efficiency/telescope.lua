@@ -7,11 +7,11 @@ end
 local extensions = {
   "fzf",
   "hop",
-  "file_browser",
   "project",
   "media_files",
   "notify",
   "dap",
+  "luasnip",
 }
 
 -- Hot-reloaded function for telescope-hop
@@ -83,6 +83,17 @@ telescope.setup {
     -- Developer configurations: Not meant for general override
     buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
   },
+  pickers = {
+    find_files = {
+      theme = "ivy",
+    },
+    oldfiles = {
+      theme = "ivy",
+    },
+    live_grep = {
+      theme = "dropdown",
+    },
+  },
   extensions = {
     fzf = {
       fuzzy = true, -- false will only do exact matching
@@ -111,9 +122,6 @@ telescope.setup {
       -- jump to entry where hoop loop was started from
       reset_selection = true,
     },
-    file_browser = {
-      theme = "ivy",
-    },
     media_files = {
       -- filetypes whitelist
       -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
@@ -129,18 +137,17 @@ for i = 1, #extensions do
   telescope.load_extension(extensions[i])
 end
 
-vim.keymap.set("n", "<leader>ff", "<cmd>lua require'telescope.builtin'.find_files()<CR>")
-vim.keymap.set("n", "<leader>fg", "<cmd>lua require'telescope.builtin'.live_grep()<CR>")
-vim.keymap.set("n", "<leader>f?", "<cmd>lua require'telescope.builtin'.help_tags()<CR>")
-vim.keymap.set("n", "<leader>fh", "<cmd>lua require'telescope.builtin'.oldfiles()<CR>")
-vim.keymap.set("n", "<leader>fb", "<cmd>lua require'telescope.builtin'.marks()<CR>")
-vim.keymap.set("n", "<space>fe", "<cmd>lua require 'telescope'.extensions.file_browser.file_browser()<CR>")
-vim.keymap.set("n", "<leader>fp", "<cmd>lua require'telescope'.extensions.project.project{}<CR>")
-vim.keymap.set("n", "<leader>fr", "<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>")
-vim.keymap.set("n", "<leader>fm", "<cmd>lua require'telescope'.extensions.media_files.media_files()<CR>")
-vim.keymap.set("n", "<leader>fn", "<cmd>lua require'telescope'.extensions.notify.notify()<CR>")
-vim.keymap.set("n", "<leader>fde", "<cmd>lua require'telescope'.extensions.dap.commands()<CR>")
-vim.keymap.set("n", "<leader>fdc", "<cmd>lua require'telescope'.extensions.dap.configurations()<CR>")
-vim.keymap.set("n", "<leader>fdb", "<cmd>lua require'telescope'.extensions.dap.list_breakpoints()<CR>")
-vim.keymap.set("n", "<leader>fdv", "<cmd>lua require'telescope'.extensions.dap.variables()<CR>")
-vim.keymap.set("n", "<leader>fdf", "<cmd>lua require'telescope'.extensions.dap.frames()<CR>")
+vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, { desc = "Find files" })
+vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, { desc = "Live grep" })
+vim.keymap.set("n", "<leader>f?", require("telescope.builtin").help_tags, { desc = "Help tags" })
+vim.keymap.set("n", "<leader>fh", require("telescope.builtin").oldfiles, { desc = "Old files" })
+vim.keymap.set("n", "<leader>fb", require("telescope.builtin").marks, { desc = "Marks" })
+vim.keymap.set("n", "<leader>fp", require("telescope").extensions.project.project, { desc = "Project" })
+vim.keymap.set("n", "<leader>fm", require("telescope").extensions.media_files.media_files, { desc = "Media files" })
+vim.keymap.set("n", "<leader>fn", require("telescope").extensions.notify.notify, { desc = "Notify" })
+vim.keymap.set("n", "<leader>fde", require("telescope").extensions.dap.commands, { desc = "Commands" })
+vim.keymap.set("n", "<leader>fdc", require("telescope").extensions.dap.configurations, { desc = "Configurations" })
+vim.keymap.set("n", "<leader>fdb", require("telescope").extensions.dap.list_breakpoints, { desc = "Breakpoints" })
+vim.keymap.set("n", "<leader>fdv", require("telescope").extensions.dap.variables, { desc = "Variables" })
+vim.keymap.set("n", "<leader>fdf", require("telescope").extensions.dap.frames, { desc = "Frames" })
+vim.keymap.set("n", "<leader>fs", require("telescope").extensions.luasnip.luasnip, { desc = "Snippets" })

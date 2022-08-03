@@ -69,3 +69,37 @@ key.setup {
     v = { "j", "k" },
   },
 }
+
+key.register {
+  ["s"] = { name = "+hop" },
+  ["["] = { name = "+prev" },
+  ["]"] = { name = "+next" },
+  ["g"] = { name = "+goto" },
+  ["<leader>"] = {
+    name = "+<leader>",
+    ["<leader>"] = { name = "+<localleader>" },
+    ["f"] = {
+      name = "+find",
+      ["d"] = { name = "+debug" },
+    },
+    ["g"] = {
+      name = "+git",
+      ["d"] = { name = "+diffview" },
+    },
+    ["s"] = {
+      name = "+session",
+      ["c"] = { name = "+current" },
+    },
+    ["b"] = {
+      name = "+buffer",
+      ["s"] = { name = "+sort" },
+    },
+    ["l"] = {
+      name = "+lsp",
+      ["w"] = { name = "+workspace" },
+    },
+    ["d"] = { name = "+debug" },
+    ["t"] = { name = "+toggle" },
+    ["h"] = { name = "+hop" },
+  },
+}

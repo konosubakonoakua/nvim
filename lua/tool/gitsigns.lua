@@ -16,30 +16,6 @@ gitsigns.setup {
   numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
   linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
   word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-
-    ["n ]c"] = { expr = true, "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'" },
-    ["n [c"] = { expr = true, "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'" },
-
-    ["n <leader>hs"] = "<cmd>Gitsigns stage_hunk<CR>",
-    ["v <leader>hs"] = ":Gitsigns stage_hunk<CR>",
-    ["n <leader>hu"] = "<cmd>Gitsigns undo_stage_hunk<CR>",
-    ["n <leader>hr"] = "<cmd>Gitsigns reset_hunk<CR>",
-    ["v <leader>hr"] = ":Gitsigns reset_hunk<CR>",
-    ["n <leader>hR"] = "<cmd>Gitsigns reset_buffer<CR>",
-    ["n <leader>hp"] = "<cmd>Gitsigns preview_hunk<CR>",
-    ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
-    ["n <leader>hS"] = "<cmd>Gitsigns stage_buffer<CR>",
-    ["n <leader>hU"] = "<cmd>Gitsigns reset_buffer_index<CR>",
-
-    -- Text objects
-    ["o ih"] = ":<C-U>Gitsigns select_hunk<CR>",
-    ["x ih"] = ":<C-U>Gitsigns select_hunk<CR>",
-    ["o ah"] = ":<C-U>Gitsigns select_hunk<CR>",
-    ["x ah"] = ":<C-U>Gitsigns select_hunk<CR>",
-  },
   watch_gitdir = {
     interval = 1000,
     follow_files = true,
@@ -52,10 +28,8 @@ gitsigns.setup {
     delay = 1000,
     ignore_whitespace = false,
   },
-  current_line_blame_formatter_opts = {
-    relative_time = false,
-  },
-  sign_priority = 8,
+  current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
+  sign_priority = 6,
   update_debounce = 100,
   status_formatter = nil, -- Use default
   max_file_length = 40000,
@@ -70,6 +44,44 @@ gitsigns.setup {
   yadm = {
     enable = false,
   },
-}
+  on_attach = function(bufnr)
+    -- Navigation
+    vim.keymap.set("n", "]c", function()
+      if vim.wo.diff then
+        return "]c"
+      end
+      vim.schedule(function()
+        gitsigns.next_hunk()
+      end)
+      return "<Ignore>"
+    end, { buffer = bufnr, expr = true, desc = "Change" })
 
-vim.keymap.set("n", "<leader>lb", ":Gitsigns toggle_current_line_blame<CR>")
+    vim.keymap.set("n", "[c", function()
+      if vim.wo.diff then
+        return "[c"
+      end
+      vim.schedule(function()
+        gitsigns.prev_hunk()
+      end)
+      return "<Ignore>"
+    end, { buffer = bufnr, expr = true, desc = "Change" })
+
+    -- Actions
+    vim.keymap.set({ "n", "v" }, "<leader>gs", "<cmd>Gitsigns stage_hunk<CR>", { buffer = bufnr, desc = "Stage hunk" })
+    vim.keymap.set({ "n", "v" }, "<leader>gr", "<cmd>Gitsigns reset_hunk<CR>", { buffer = bufnr, desc = "Reset hunk" })
+    vim.keymap.set("n", "<leader>gu", gitsigns.undo_stage_hunk, { buffer = bufnr, desc = "Undo stage hunk" })
+    vim.keymap.set("n", "<leader>gS", gitsigns.stage_buffer, { buffer = bufnr, desc = "Stage buffer" })
+    vim.keymap.set("n", "<leader>gR", gitsigns.reset_buffer, { buffer = bufnr, desc = "Reset buffer" })
+    vim.keymap.set("n", "<leader>gp", gitsigns.preview_hunk, { buffer = bufnr, desc = "Preview hunk" })
+    vim.keymap.set("n", "<leader>gb", function()
+      gitsigns.blame_line { full = true }
+    end, { buffer = bufnr, desc = "Blame line" })
+
+    vim.keymap.set("n", "<leader>td", gitsigns.toggle_deleted, { buffer = bufnr, desc = "Deleted" })
+    vim.keymap.set("n", "<leader>tb", gitsigns.toggle_current_line_blame, { buffer = bufnr, desc = "Line Blame" })
+
+    -- Text object
+    vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+    vim.keymap.set({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>")
+  end,
+}

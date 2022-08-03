@@ -13,7 +13,7 @@ toggleterm.setup {
       return vim.o.columns * 0.4
     end
   end,
-  open_mapping = [[<c-\>]],
+  open_mapping = [[<C-\>]],
   hide_numbers = true, -- hide the number column in toggleterm buffers
   shade_filetypes = {},
   shade_terminals = true,
@@ -41,47 +41,5 @@ toggleterm.setup {
   },
 }
 
-local Terminal = require("toggleterm.terminal").Terminal
-
--- For lazygit
-local lazygit = Terminal:new {
-  cmd = "lazygit",
-  dir = "git_dir",
-  direction = "float",
-  float_opts = {
-    border = "curved",
-  },
-}
-
-vim.keymap.set("n", "<leader>lg", function()
-  lazygit:toggle()
-end)
-
--- For tig
-local tig = Terminal:new {
-  cmd = "tig",
-  dir = "git_dir",
-  direction = "float",
-  float_opts = {
-    border = "curved",
-  },
-}
-
-vim.keymap.set("n", "<leader>tg", function()
-  tig:toggle()
-end)
-
--- For glow
-local glow = Terminal:new {
-  cmd = "glow",
-  direction = "float",
-  float_opts = {
-    border = "curved",
-  },
-}
-
-vim.keymap.set("n", "<leader>gl", function()
-  glow:toggle()
-end)
-
 vim.keymap.set("t", "<Esc>", "<C-\\><C-N>")
+vim.keymap.set("n", "<leader>tt", "<Cmd>ToggleTermToggleAll<CR>", { desc = "All Terminal" })

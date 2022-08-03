@@ -23,26 +23,12 @@ info.setup {
   -- The plugin will try to auto-detect the package manager based on
   -- `yarn.lock` or `package-lock.json`. If none are found it will use the
   -- provided one, if nothing is provided it will use `yarn`
-  package_manager = "yarn",
+  package_manager = "npm",
 }
 
--- Show package versions
-vim.keymap.set("n", "<leader>ns", ":lua require('package-info').show()<CR>")
-
--- Hide package versions
-vim.keymap.set("n", "<leader>nc", ":lua require('package-info').hide()<CR>")
-
--- Update package on line
-vim.keymap.set( "n", "<leader>nu", ":lua require('package-info').update()<CR>")
-
--- Delete package on line
-vim.keymap.set( "n", "<leader>nd", ":lua require('package-info').delete()<CR>")
-
--- Install a new package
-vim.keymap.set( "n", "<leader>ni", ":lua require('package-info').install()<CR>")
-
--- Reinstall dependencies
-vim.keymap.set( "n", "<leader>nr", ":lua require('package-info').reinstall()<CR>")
-
--- Install a different package version
-vim.keymap.set( "n", "<leader>np", ":lua require('package-info').change_version()<CR>")
+vim.keymap.set("n", "<Leader><Leader>s", require("package-info").show, { desc = "Show package versions" })
+vim.keymap.set("n", "<Leader><Leader>c", require("package-info").hide, { desc = "Hide package versions" })
+vim.keymap.set("n", "<Leader><Leader>u", require("package-info").update, { desc = "Update package on line" })
+vim.keymap.set("n", "<Leader><Leader>d", require("package-info").delete, { desc = "Delete package on line" })
+vim.keymap.set("n", "<Leader><Leader>i", require("package-info").install, { desc = "Install a new package" })
+vim.keymap.set( "n", "<Leader><Leader>p", require("package-info").change_version, { desc = "Install a different package version" })
